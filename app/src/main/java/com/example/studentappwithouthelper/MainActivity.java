@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -42,8 +43,8 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
         viewBtn.setOnClickListener(this);
         showBtn.setOnClickListener(this);
 
-        db=openOrCreateDatabase("StudentDB", Context.MODE_PRIVATE, null);
-        db.execSQL("CREATE TABLE IF NOT EXISTS student(rollnum VARCHAR, name VARCHAR, marks VARCHAR);");
+        db=openOrCreateDatabase("student", Context.MODE_PRIVATE, null);
+        db.execSQL("CREATE TABLE IF NOT EXISTS student(rollno VARCHAR, name VARCHAR, marks VARCHAR);");
 
     }
 
@@ -56,7 +57,8 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                 showMessage("Error", "Please enter all values");
                 return;
             }
-            db.execSQL("INSERT INTO student VALUES ("+rollEditText.getText() +","+nameEditText.getText()+","+marksEditText.getText()+");");
+            Log.d("error", ""+ rollEditText.getText());
+            db.execSQL("INSERT INTO student VALUES ('"+rollEditText.getText() +"','"+nameEditText.getText()+"','"+marksEditText.getText()+"');");
             showMessage("Success", "Record added");
             clearText();
 
@@ -98,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
         }
 
         if (view == viewAllBtn){
-            Cursor c = db.rawQuery("SELECT * FROM studemt", null);
+            Cursor c = db.rawQuery("SELECT * FROM student", null);
             if (c.getCount()==0){
                 showMessage("Error", "No Record Found");
                 return;
